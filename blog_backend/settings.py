@@ -82,10 +82,10 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/[YOUR-CONNECTION-NAME]',
-            'USER': 'django',
+            'HOST': '/cloudsql/blog-bakcend:us-central1:blog-db',
+            'USER': 'blog-backend',
             'PASSWORD': DB_PASSWORD,
-            'NAME': 'django',
+            'NAME': 'blog_db',
         }
     }
 else:
@@ -100,8 +100,8 @@ else:
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '127.0.0.1',
             'PORT': '3306',
-            'NAME': 'test',
-            'USER': 'spring',
+            'NAME': 'blog_db',
+            'USER': 'blog-backend',
             'PASSWORD': DB_PASSWORD,
         }
     }
