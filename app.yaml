@@ -1,0 +1,6 @@
+runtime: python37
+entrypoint: gunicorn -b :8080 blog_backend.wsgi
+
+handlers:
+  - url: /static
+    static_dir: static/

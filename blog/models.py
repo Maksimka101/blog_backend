@@ -1,22 +1,17 @@
 import json
 import uuid as uuid
 from typing import Dict, Any, NoReturn
-
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
 from django.core import serializers
 from django.db.models import *
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class User(Model):
 
     id = UUIDField(primary_key=True, default=uuid.uuid4)
 
     name = CharField(max_length=30)
 
     image_url = URLField(max_length=100)
-
-    is_authorized = BooleanField(default=False)
 
     subscribers = ManyToManyField('self', related_name='subscribers+', blank=True, symmetrical=False)
 
@@ -65,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             return User()
 
     def __str__(self):
-        return 'uuid: {0}, name: {1}, is_authorized: {2}'.format(self.id, self.name, self.is_authorized)
+        return 'uuid: {0}, name: {1}'.format(self.id, self.name)
 
 
 class Post(Model):

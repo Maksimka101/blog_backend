@@ -7,12 +7,14 @@ import blog.user_service as user_service
 import json
 
 
+@csrf_exempt
 def get_user(request: HttpRequest, identity: str):
     user_dict = user_service.get_serialized_user(identity)
     response = CustomResponse(user_dict)
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def subscribe(request: HttpRequest, user: str, subscriber: str):
     is_subscribe = user_service.subscribe(user, subscriber)
     response = CustomResponse()
@@ -20,6 +22,7 @@ def subscribe(request: HttpRequest, user: str, subscriber: str):
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def unsubscribe(request: HttpRequest, user: str, subscriber: str):
     is_unsubscribe = user_service.unsubscribe(user, subscriber)
     response = CustomResponse()
@@ -27,12 +30,14 @@ def unsubscribe(request: HttpRequest, user: str, subscriber: str):
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def get_all_subscriptions(request: HttpRequest, identity: str):
     users_dict = user_service.get_all_subscriptions(identity)
     response = CustomResponse(users_dict)
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def delete_user(request: HttpRequest, identity: str):
     user_password_for_authentication = request.headers.get('password')
     is_deleted = user_service.delete_user(identity, user_password_for_authentication)
@@ -85,6 +90,7 @@ def create_comment(request: HttpRequest):
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def delete_comment(request: HttpRequest, identity: int):
     user_password_for_authentication = request.headers.get('password')
     is_deleted = user_service.delete_comment(identity, user_password_for_authentication)
@@ -93,6 +99,7 @@ def delete_comment(request: HttpRequest, identity: int):
     return HttpResponse(response.to_json())
 
 
+@csrf_exempt
 def delete_post(request: HttpRequest, identity: str):
     user_password_for_authentication = request.headers.get('password')
     is_deleted = user_service.delete_post(int(identity), user_password_for_authentication)

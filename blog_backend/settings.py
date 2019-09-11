@@ -27,7 +27,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -82,7 +82,7 @@ if os.getenv('GAE_APPLICATION', None):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/blog-bakcend:us-central1:blog-db',
+            'HOST': '/cloudsql/vlog-backend:europe-west1:blog-db',
             'USER': 'blog-backend',
             'PASSWORD': DB_PASSWORD,
             'NAME': 'blog_db',
@@ -99,7 +99,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '127.0.0.1',
-            'PORT': '3306',
+            'PORT': '3304',
             'NAME': 'blog_db',
             'USER': 'blog-backend',
             'PASSWORD': DB_PASSWORD,
@@ -144,3 +144,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
