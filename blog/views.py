@@ -67,6 +67,13 @@ def update_user(request: HttpRequest):
 
 
 @csrf_exempt
+def find_users_by_name(request, name: str):
+    users = user_service.get_user_by_name(name)
+    response = CustomResponse([i.to_dict() for i in users])
+    return HttpResponse(response.to_json())
+
+
+@csrf_exempt
 def create_post(request: HttpRequest):
     post_dict = json.loads(request.body.decode())
     post = Post()

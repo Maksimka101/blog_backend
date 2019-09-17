@@ -1,5 +1,4 @@
 import json
-import uuid as uuid
 from typing import Dict, Any, NoReturn
 from django.core import serializers
 from django.db.models import *
@@ -7,9 +6,7 @@ from django.db.models import *
 
 class User(Model):
 
-    id = UUIDField(primary_key=True, default=uuid.uuid4)
-
-    name = CharField(max_length=30)
+    name = CharField(max_length=30, primary_key=True)
 
     image_url = URLField(max_length=100)
 
@@ -22,15 +19,14 @@ class User(Model):
     USERNAME_FIELD = 'name'
 
     def is_valid(self) -> bool:
-        if self.id is not None and self.name is not None:
+        if self.name is not None:
             return True
         return False
 
     def to_dict(self) -> Dict[str, Any]:
         user_dict: Dict[str, Any] = serializers.serialize('python', [self])[0]['fields']
-        user_dict['id'] = self.id
         user_dict['posts'] = []
-        return user_dict
+        return dict(user_dict)
 
     def from_dict(self, user: Dict[str, Any]) -> NoReturn:
         for key, value in user.items():
@@ -60,7 +56,7 @@ class User(Model):
             return User()
 
     def __str__(self):
-        return 'uuid: {0}, name: {1}'.format(self.id, self.name)
+        return 'name: {0}'.format(self.name)
 
 
 class Post(Model):
@@ -77,7 +73,7 @@ class Post(Model):
 
     def to_dict(self) -> Dict[str, Any]:
         post_dict: Dict[str, Any] = dict(serializers.serialize('python', [self])[0]['fields'])
-        post_dict['author'] = self.author.id
+        post_dict['author'] = self.author.name
         post_dict['id'] = self.id
         post_dict['comments'] = []
         return post_dict
