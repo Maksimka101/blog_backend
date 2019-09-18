@@ -43,7 +43,9 @@ def unsubscribe(user: str, subscriber: str) -> bool:
 
 def get_all_subscriptions(uuid: str) -> List[Dict[str, Any]]:
     user = User.objects.get(name=uuid)
-    users_dict: List[Dict[str, Any]] = [get_serialized_user(i.id) for i in user.subscribes.all()]
+    users_dict: List[Dict[str, Any]] = []
+    for i in user.subscribes.all():
+        users_dict.append(get_serialized_user(i.name))
     return users_dict
 
 

@@ -26,6 +26,7 @@ class User(Model):
     def to_dict(self) -> Dict[str, Any]:
         user_dict: Dict[str, Any] = serializers.serialize('python', [self])[0]['fields']
         user_dict['posts'] = []
+        user_dict['name'] = self.name
         return dict(user_dict)
 
     def from_dict(self, user: Dict[str, Any]) -> NoReturn:
@@ -38,9 +39,6 @@ class User(Model):
 
             elif key == 'subscribes':
                 self.subscribes.set(value)
-
-            elif key == 'id':
-                self.id = value
 
             elif hasattr(self, key):
                 setattr(self, key, value)
@@ -73,6 +71,7 @@ class Post(Model):
 
     def to_dict(self) -> Dict[str, Any]:
         post_dict: Dict[str, Any] = dict(serializers.serialize('python', [self])[0]['fields'])
+        post_dict['create_date'] = str(self.create_date)
         post_dict['author'] = self.author.name
         post_dict['id'] = self.id
         post_dict['comments'] = []
