@@ -8,7 +8,8 @@ class User(Model):
 
     name = CharField(max_length=30, primary_key=True)
 
-    image_url = URLField(max_length=100)
+    image_url = CharField(max_length=100, default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfX'
+                                                  '7S-kEZdDmczOqUo9YkG2mDOrc1KFcWUSBJ5gQQY5B0aHmyHgA')
 
     subscribers = ManyToManyField('self', related_name='subscribers+', blank=True, symmetrical=False)
 

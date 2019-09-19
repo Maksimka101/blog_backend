@@ -53,7 +53,7 @@ def delete_user(uuid: str, password: str) -> bool:
     user = User.objects.get(name=uuid)
     user.password = password
     if is_user_authenticated(user):
-        django_user = authenticate(username=str(user.id), password=user.password)
+        django_user = authenticate(username=str(user.name), password=user.password)
         django_user.delete()
         user.delete()
         return True
