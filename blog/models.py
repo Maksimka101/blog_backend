@@ -8,8 +8,8 @@ class User(Model):
 
     name = CharField(max_length=30, primary_key=True)
 
-    image_url = CharField(max_length=100, default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfX'
-                                                  '7S-kEZdDmczOqUo9YkG2mDOrc1KFcWUSBJ5gQQY5B0aHmyHgA')
+    image_url = CharField(max_length=200, default='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR'
+                                                  'fX7S-kEZdDmczOqUo9YkG2mDOrc1KFcWUSBJ5gQQY5B0aHmyHgA')
 
     subscribers = ManyToManyField('self', related_name='subscribers+', blank=True, symmetrical=False)
 
@@ -96,12 +96,13 @@ class Comment(Model):
 
     post = ForeignKey(Post, on_delete=CASCADE, default='')
 
-    author_image_url = URLField(max_length=100)
+    author_image_url: str
 
     content = TextField(default='')
 
     def to_dict(self) -> Dict[str, Any]:
         comment_dict: Dict[str, Any] = serializers.serialize('python', [self])[0]['fields']
+        comment_dict['author_image_url'] = self.author_image_url
         comment_dict['id'] = self.id
         comment_dict['post'] = self.post.id
         comment_dict['author'] = self.author.id
@@ -112,6 +113,7 @@ class Comment(Model):
             if key == 'author':
                 from blog.user_service import get_user
                 self.author = get_user(value)
+                self.author_image_url = self.author.image_url
             elif key == 'post':
                 from blog.user_service import get_post
                 self.post = get_post(int(value))
