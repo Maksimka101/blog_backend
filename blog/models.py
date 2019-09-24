@@ -96,16 +96,14 @@ class Comment(Model):
 
     post = ForeignKey(Post, on_delete=CASCADE, default='')
 
-    author_image_url: str
-
     content = TextField(default='')
 
     def to_dict(self) -> Dict[str, Any]:
         comment_dict: Dict[str, Any] = serializers.serialize('python', [self])[0]['fields']
-        comment_dict['author_image_url'] = self.author_image_url
+        comment_dict['author_image_url'] = self.author.image_url
         comment_dict['id'] = self.id
         comment_dict['post'] = self.post.id
-        comment_dict['author'] = self.author.id
+        comment_dict['author'] = self.author.name
         return comment_dict
 
     def from_dict(self, comment: Dict[str, Any]) -> NoReturn:
@@ -113,7 +111,6 @@ class Comment(Model):
             if key == 'author':
                 from blog.user_service import get_user
                 self.author = get_user(value)
-                self.author_image_url = self.author.image_url
             elif key == 'post':
                 from blog.user_service import get_post
                 self.post = get_post(int(value))
