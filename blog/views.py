@@ -16,7 +16,7 @@ def get_user(request: HttpRequest, identity: str):
 
 @csrf_exempt
 def subscribe(request: HttpRequest, user: str, subscriber: str):
-    is_subscribe = user_service.subscribe(user, subscriber)
+    is_subscribe = user_service.subscribe(request.GET['user'], request.GET['subscriber'])
     response = CustomResponse()
     response.status_from_bool(is_subscribe)
     return HttpResponse(response.to_json())
@@ -24,7 +24,7 @@ def subscribe(request: HttpRequest, user: str, subscriber: str):
 
 @csrf_exempt
 def unsubscribe(request: HttpRequest, user: str, subscriber: str):
-    is_unsubscribe = user_service.unsubscribe(user, subscriber)
+    is_unsubscribe = user_service.unsubscribe(request.GET['user'], request.GET['subscriber'])
     response = CustomResponse()
     response.status_from_bool(is_unsubscribe)
     return HttpResponse(response.to_json())
