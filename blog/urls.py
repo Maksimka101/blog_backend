@@ -3,6 +3,7 @@ from blog import views
 
 urlpatterns = [
     url(r'^user/get/(?P<identity>[-\w]*)$', views.get_user),
+    url(r'^user/get_full/(?P<identity>[-\w]*)$', views.get_full_user),
     url(r'^user/get_all_subscriptions/(?P<identity>[-\w]*)$', views.get_all_subscriptions),
     url(r'^user/find_by_name/(?P<name>\w*)$', views.find_users_by_name),
     url(r'^user/subscribe$', views.subscribe, {'user': '', 'subscriber': ''}),

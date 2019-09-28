@@ -9,6 +9,13 @@ import json
 
 @csrf_exempt
 def get_user(request: HttpRequest, identity: str):
+    user_dict = user_service.get_user(identity)
+    response = CustomResponse(user_dict)
+    return HttpResponse(response.to_json())
+
+
+@csrf_exempt
+def get_full_user(request: HttpRequest, identity: str):
     user_dict = user_service.get_serialized_user(identity)
     response = CustomResponse(user_dict)
     return HttpResponse(response.to_json())
