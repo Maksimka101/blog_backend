@@ -74,9 +74,6 @@ def create_user(user: User) -> bool:
             if authenticate(user.name, password=user.password) is None:
                 user.save()
                 django_user = DjangoUser.objects.create_user(user.name, '@', user.password)
-                # чтобы проверять, одинаковые ли пользователи
-                # django_user.first_name = user.id[:len(user.id)//2]
-                # django_user.last_name = user.id[len(user.id)//2:]
                 django_user.save()
                 return True
     return False
@@ -93,9 +90,8 @@ def update_user(user: User) -> bool:
 
 
 def create_post(post: Post, author_password: str) -> bool:
-    author = post.author
-    author.password = author_password
-    if is_user_authenticated(author):
+    post.author.password = author_password
+    if is_user_authenticated(post.author):
         post.save()
         return True
     return False
@@ -116,7 +112,9 @@ def delete_post(post_id: int, user_password: str) -> bool:
 
 
 def create_comment(comment: Comment, user_password: str) -> bool:
-    if is_user_authenticated(comment.author, user_password):
+    user = User.objects.get(name=comment.author.name)
+    user.password = user_password
+    if is_user_authenticated(user):
         comment.save()
         return True
     return False
@@ -126,7 +124,7 @@ def delete_comment(identity: int, user_password: str) -> bool:
     user_comment = Comment.objects.get(id=identity)
     user = user_comment.author
     user.password = user_password
-    if is_user_authenticated(user, user_password):
+    if is_user_authenticated(user):
         user_comment.delete()
         return True
     return False
@@ -137,12 +135,8 @@ def get_comment(comment_identity: int) -> Comment:
 
 
 # util function
-def is_user_authenticated(user: User, user_password: str = None) -> bool:
+def is_user_authenticated(user: User) -> bool:
     if user.is_valid():
-        if user_password is not None:
-            authenticated_user = authenticate(username=user.name, password=user_password)
-            if authenticated_user is not None:
-                return True
         if user.password is not None:
             authenticated_user = authenticate(username=user.name, password=user.password)
             if authenticated_user is not None:

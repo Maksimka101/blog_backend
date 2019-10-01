@@ -9,7 +9,7 @@ import json
 
 @csrf_exempt
 def get_user(request: HttpRequest, identity: str):
-    user_dict = user_service.get_user(identity)
+    user_dict = user_service.get_user(identity).to_dict()
     response = CustomResponse(user_dict)
     return HttpResponse(response.to_json())
 
@@ -22,7 +22,7 @@ def get_full_user(request: HttpRequest, identity: str):
 
 
 @csrf_exempt
-def subscribe(request: HttpRequest, user: str, subscriber: str):
+def subscribe(request: HttpRequest):
     is_subscribe = user_service.subscribe(request.GET['user'], request.GET['subscriber'])
     response = CustomResponse()
     response.status_from_bool(is_subscribe)
@@ -30,7 +30,7 @@ def subscribe(request: HttpRequest, user: str, subscriber: str):
 
 
 @csrf_exempt
-def unsubscribe(request: HttpRequest, user: str, subscriber: str):
+def unsubscribe(request: HttpRequest):
     is_unsubscribe = user_service.unsubscribe(request.GET['user'], request.GET['subscriber'])
     response = CustomResponse()
     response.status_from_bool(is_unsubscribe)
