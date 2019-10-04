@@ -99,7 +99,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'HOST': '127.0.0.1',
-            'PORT': '3304',
+            'PORT': '3303',
             'NAME': 'blog_db',
             'USER': 'blog-backend',
             'PASSWORD': DB_PASSWORD,

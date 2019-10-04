@@ -61,7 +61,8 @@ def delete_user(uuid: str, password: str) -> bool:
 
 
 def get_user(uuid: str) -> User:
-    return User.objects.get(name=uuid)
+    user = User.objects.get(name=uuid)
+    return user
 
 
 def get_user_by_name(name: str) -> List[User]:
